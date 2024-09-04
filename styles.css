@@ -5,41 +5,93 @@ html, body {
 
 body {
   display: flex;
-  justify-content: center; /* 水平方向の中央配置 */
-  align-items: center; /* 垂直方向の中央配置 */
-  height: 100vh; /* ビューポート全体の高さを占める */
+  flex-direction: column; /* 要素を縦に並べる */
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
   width: 100vw;
-  margin: 0 auto;
-  background-color: #f0f0f0; /* 背景色を設定（任意） */
+  background-color: #f0f0f0;
 }
 
 #maze {
   display: grid;
-  grid-template-columns: repeat(15, 20px); /* 迷路のセルのサイズに合わせる */
-  grid-template-rows: repeat(15, 20px); /* 迷路のセルのサイズに合わせる */
-  gap: 0px; /* セル間の隙間（任意） */
-  background-color: white; /* 迷路の背景色（任意） */
-  padding: 10px; /* 迷路全体のパディング（任意） */
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* 迷路に影をつける（任意） */
+  grid-template-columns: repeat(16, 20px);
+  grid-template-rows: repeat(16, 20px);
+  gap: 0px;
+  background-color: white;
+  padding: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+
 .cell {
   width: 20px;
   height: 20px;
   box-sizing: border-box;
-}
-/* 迷路のセルのボーダー設定 */
-.cell {
   border-right: solid 2px black;
   border-bottom: solid 2px black;
 }
-.cell:first-child { border-left: solid 2px black; }
-.cell:nth-child(15) { border-right: solid 2px black; } /* 15列ごとに適用 */
-.cell:nth-child(15n + 1) { border-left: solid 2px black; }
-.cell:nth-child(-n+15) { border-top: solid 2px black; } /* 最初の15個に適用 */
-.no-top { border-top: none; }
-.no-right { border-right: none; }
-.no-bottom { border-bottom: none; }
-.no-left { border-left: none; }
-.start { background-color: lightgreen; }
-.goal { background-color: lightcoral; }
-.path { background-color: lightblue; }
+
+.cell:first-child {
+  border-left: solid 2px black;
+}
+
+.cell:nth-child(16) {
+  border-right: solid 2px black;
+}
+
+.cell:nth-child(16n + 1) {
+  border-left: solid 2px black;
+}
+
+.cell:nth-child(-n+16) {
+  border-top: solid 2px black;
+}
+
+.no-top {
+  border-top: none;
+}
+
+.no-right {
+  border-right: none;
+}
+
+.no-bottom {
+  border-bottom: none;
+}
+
+.no-left {
+  border-left: none;
+}
+
+.start {
+  background-color: lightgreen;
+}
+
+.goal {
+  background-color: lightcoral;
+}
+
+.path {
+  background-color: lightblue;
+}
+
+#answer-container {
+  width: 100%;
+  text-align: center;
+  margin-top: 30px;
+}
+
+#answer-button {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 16px;
+}
+
+#answer-display {
+  margin-bottom: 16px;
+  font-size: 30px;
+  color: #333;
+  font-weight: bold;
+  visibility: hidden; /* 見えない状態にするが、スペースを確保する */
+  height: 30px; /* 一行の高さを確保 */
+}

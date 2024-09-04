@@ -1,105 +1,19 @@
-const quizQuestions = [
-        "水は何度で氷になりますか？",
-        "地球は太陽系の何番目の惑星ですか？",
-        "日本で一番高い山は何ですか？",
-        "ピザの発祥地はどの国ですか？",
-        "モナ・リザを描いたのは誰ですか？",
-        "光の速さは毎秒何キロメートルですか？",
-        "太陽系で最も大きな惑星は何ですか？",
-        "人間の体で最も大きな臓器は何ですか？",
-        "エジプトにある有名な古代遺跡は何ですか？",
-        "パリにある有名な鉄塔の名前は何ですか？",
-        "酸素の化学式は何ですか？",
-        "人間の血液中に最も多く含まれる金属は何ですか？",
-        "日本の通貨は何ですか？",
-        "日本の国旗に描かれている色は何と何ですか？",
-        "オリンピックは何年ごとに開催されますか？",
-        "ドレミの次に来る音階は何ですか？",
-        "水の化学式は何ですか？",
-        "月は地球の周りを何日で一周しますか？",
-        "東京は日本の何地方にありますか？",
-        "カンガルーはどの国の動物ですか？",
-        "スペインの首都はどこですか？",
-        "火星の空の色は何色ですか？",
-        "パンダが主に食べる植物は何ですか？",
-        "酸素は元素記号で何と表されますか？",
-        "二酸化炭素の化学式は何ですか？",
-        "世界で最も大きな砂漠は何ですか？",
-        "ドイツの首都はどこですか？",
-        "地球の自転はどちら回りですか？",
-        "光の速度は秒速何キロメートルですか？",
-        "太陽の周りを公転している惑星はいくつありますか？",
-        "地球の表面の約何パーセントが水で覆われていますか？",
-        "エベレスト山はどの国にありますか？",
-        "ニュートンが発見した法則は何ですか？",
-        "地球の北半球で冬至は何月に起こりますか？",
-        "世界最大の洋は何ですか？",
-        "電池に使われる化学元素は何ですか？",
-        "国際的に使われる海上の救難信号は何ですか？",
-        "酸素を発見した科学者は誰ですか？",
-        "最も多くのメダルを獲得したオリンピック選手は誰ですか？",
-        "日本で最も人口が多い都市はどこですか？",
-        "アルファベットの最初の文字は何ですか？",
-        "地球から月までの平均距離は約何キロメートルですか？",
-        "一番深い海溝はどこですか？",
-        "日本の建国記念日は何月何日ですか？",
-        "アインシュタインが提唱した理論は何ですか？",
-        "元素の周期表で一番最初に来る元素は何ですか？",
-        "東京オリンピックが最初に開催された年は何年ですか？",
-        "太平洋を横断した初の航空機は何ですか？",
-        "最も多くの島を持つ国はどこですか？",
-        "地球の自転は1日何時間かかりますか？",
-        "温度を測るために使う装置は何ですか？",
-        "光が1年で進む距離を何と言いますか？",
-        "オーロラは主にどの地帯で見られますか？",
-        "人間の体温の平均は何度ですか？",
-        "日本の国花は何ですか？",
-        "最も近い恒星は何ですか？",
-        "アフリカ大陸の中で最も面積が広い国はどこですか？",
-        "日本の一番長い川は何ですか？",
-        "世界で最も深い湖はどこですか？",
-        "原子番号が1の元素は何ですか？",
-        "太陽は何でできていますか？",
-        "最も多くの元素が発見された国はどこですか？",
-        "日本の最北端の島はどこですか？",
-        "地球の直径は約何キロメートルですか？",
-        "フランスの首都はどこですか？",
-        "日本で一番広い都道府県はどこですか？",
-        "エベレスト山の高さは約何メートルですか？",
-        "アメリカの国旗には何本の縞がありますか？",
-        "最も近い惑星は何ですか？",
-        "原子爆弾が最初に落とされた都市はどこですか？",
-        "酸性雨の主な原因は何ですか？",
-        "人間が飲むことができる水の塩分濃度は何パーセント以下ですか？",
-        "日本の天皇の名前は何ですか？",
-        "オーストラリアの首都はどこですか？",
-        "一番大きい大陸はどこですか？",
-        "地球の中で最も大きな海は何ですか？",
-        "地球の自転の向きはどちらですか？",
-        "日本で最も高いビルは何ですか？",
-        "日本の現在の天皇は誰ですか？",
-        "最も多くの言語が話されている国はどこですか？",
-        "世界で最も高いビルはどこにありますか？",
-        "フランス革命は何年に始まりましたか？",
-        "世界で最も古い木造建築はどこですか？",
-        "イタリアの首都はどこですか？",
-        "世界で最も広い砂漠は何ですか？",
-        "地球で最も高い地点はどこですか？",
-        "最も多くの国と国境を接している国はどこですか？",
-        "太陽の表面温度は約何度ですか？",
-        "オリンピックの発祥地はどこですか？",
-        "日本で一番広い湖はどこですか？",
-        "最も多くの氷河を持つ国はどこですか？",
-        "オーストラリア大陸の最高峰はどこですか？",
-        "世界で最も深い海はどこですか？",
-        "世界で最も大きな島は何ですか？",
-        "アメリカ合衆国の独立記念日は何月何日ですか？"
-];
+function getFilteredQuizQuestion(pathLength) {
+    // パスの長さに収まるクイズ問題をフィルタリング
+    const filteredQuestions = quizQuestions.filter(q => q.question.length <= pathLength);
 
+    // フィルタリングされた問題が存在する場合、ランダムに選択
+    if (filteredQuestions.length > 0) {
+        const randomIndex = Math.floor(Math.random() * filteredQuestions.length);
+        return filteredQuestions[randomIndex];
+    } else {
+        return null; // 条件に合う問題がない場合
+    }
+}
 
 function insertRandomKanaInNonPathCells(maze, pathCells) {
     const kanaChars = "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをん";
-    const nonPathCells = [];
+    let nonPathCells = [];
 
     // 最短経路以外のセルを収集
     for (let y = 0; y < maze.length; y++) {
@@ -111,16 +25,15 @@ function insertRandomKanaInNonPathCells(maze, pathCells) {
         }
     }
 
-    // ランダムに仮名を挿入
-    nonPathCells.forEach((cell, index) => {
-        if (index % 3 !== 0) return
+    // シャッフルしてランダムに仮名を挿入
+    nonPathCells = nonPathCells.sort(() => Math.random() - 0.5);
+    nonPathCells.slice(0, Math.floor(nonPathCells.length / 3)).forEach(cell => {
         const cellDiv = document.querySelector(`#cell-${cell.x}-${cell.y}`);
         const randomKana = kanaChars[Math.floor(Math.random() * kanaChars.length)];
         cellDiv.textContent = randomKana;
-        cellDiv.style.fontSize = '14px'; // 必要に応じてフォントサイズを調整
+        cellDiv.style.fontSize = `${Math.max(12, Math.min(20, 14))}px`; // フォントサイズを動的に調整
     });
 }
-
 
 
 function getRandomQuizQuestion() {
@@ -129,7 +42,7 @@ function getRandomQuizQuestion() {
 }
 
 const selectedQuestion = getRandomQuizQuestion();
-const questionChars = selectedQuestion.split(""); // 文字ごとに分割
+const questionChars = selectedQuestion.question.split(""); // 文字ごとに分割
 
 
 class Cell {
@@ -143,36 +56,65 @@ class Cell {
   }
 }
 
-const cols = 15;  // 列数を15に変更
-const rows = 15;  // 行数を15に変更
+const cols = 16;
+const rows = 16;
 const maze = [];
 const stack = [];
 
-
-
-function getRandomQuizQuestion() {
-    const randomIndex = Math.floor(Math.random() * quizQuestions.length);
-    return quizQuestions[randomIndex];
-}
-
 function placeQuizQuestionOnPath(pathCells) {
-    const totalCells = pathCells.length;
-    const totalChars = questionChars.length;
+    const pathLength = pathCells.length;
 
-    // 文字を配置する間隔を計算し、ゴール地点に最後の文字が配置されるようにする
-    const interval = (totalCells - 1) / (totalChars - 1); 
+    // 最短経路の長さに合ったクイズ問題を取得
+    const selectedQuestion = getFilteredQuizQuestion(pathLength);
 
-    for (let i = 0; i < totalChars; i++) {
-        // 各文字の位置を計算
-        const position = Math.round(i * interval);
-        const cell = pathCells[position];
-        const cellDiv = document.querySelector(`#cell-${cell.x}-${cell.y}`);
+    if (selectedQuestion) {
+        const questionChars = selectedQuestion.question.split(""); // 文字ごとに分割
+        const totalChars = questionChars.length;
 
-        // 文字を配置
-        cellDiv.textContent = questionChars[i];
-        cellDiv.style.fontSize = '14px'; // 必要に応じてフォントサイズを調整
+        // 文字を配置する間隔を計算し、ゴール地点に最後の文字が配置されるようにする
+        const interval = Math.floor((pathLength - 2) / (totalChars - 1)); // 最初と最後を除く
+
+        // 最初の文字をスタート地点に配置
+        const startCell = pathCells[0];
+        const startCellDiv = document.querySelector(`#cell-${startCell.x}-${startCell.y}`);
+        startCellDiv.textContent = questionChars[0];
+        startCellDiv.style.fontSize = `${Math.max(12, Math.min(20, 14))}px`;
+
+        // 最後の文字をゴール地点に配置
+        const goalCell = pathCells[pathCells.length - 1];
+        const goalCellDiv = document.querySelector(`#cell-${goalCell.x}-${goalCell.y}`);
+        goalCellDiv.textContent = questionChars[totalChars - 1];
+        goalCellDiv.style.fontSize = `${Math.max(12, Math.min(20, 14))}px`;
+
+        // 残りの文字を経路上に等間隔で配置
+        for (let i = 1; i < totalChars - 1; i++) {
+            const position = i * interval + 1; // スタートとゴールを除いた位置
+            const cell = pathCells[position];
+            const cellDiv = document.querySelector(`#cell-${cell.x}-${cell.y}`);
+            cellDiv.textContent = questionChars[i];
+            cellDiv.style.fontSize = `${Math.max(12, Math.min(20, 14))}px`;
+        }
+
+        // クイズの答えを表示するボタンを迷路の次に追加
+        const answerButton = document.getElementById('answer-button');
+        const answerDisplay = document.getElementById('answer-display');
+
+        answerButton.style.display = 'inline-block';
+        answerButton.onclick = () => {
+            answerDisplay.textContent = 'A. ' + selectedQuestion.answer;  // 答えを設定
+            answerDisplay.style.visibility = 'visible';  // 答えを表示
+
+            // 最短経路をハイライト
+            pathCells.forEach(cell => {
+                const cellDiv = document.querySelector(`#cell-${cell.x}-${cell.y}`);
+                cellDiv.classList.add('path');
+            });
+        };
+    } else {
+        console.log("適したクイズ問題が見つかりませんでした。");
     }
 }
+
 
 
 
