@@ -11,8 +11,8 @@ html, body {
 
 #maze {
   display: grid;
-  grid-template-columns: repeat(16, 20px);
-  grid-template-rows: repeat(16, 20px);
+  grid-template-columns: repeat(10, 30px);
+  grid-template-rows: repeat(10, 30px);
   gap: 0px;
   background-color: white;
   padding: 10px;
@@ -20,8 +20,10 @@ html, body {
 }
 
 .cell {
-  width: 20px;
-  height: 20px;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
   box-sizing: border-box;
   border-right: solid 2px black;
   border-bottom: solid 2px black;
@@ -31,15 +33,15 @@ html, body {
   border-left: solid 2px black;
 }
 
-.cell:nth-child(16) {
+.cell:nth-child(10) {
   border-right: solid 2px black;
 }
 
-.cell:nth-child(16n + 1) {
+.cell:nth-child(10n + 1) {
   border-left: solid 2px black;
 }
 
-.cell:nth-child(-n+16) {
+.cell:nth-child(-n+10) {
   border-top: solid 2px black;
 }
 
