@@ -74,11 +74,11 @@ function drawMaze() {
     }
 }
 
-// 迷路を生成する関数
-function generateMaze() {
-    maze = []
-    stack = []
-
+// ゴールから遠ざかることを優先し、かつ蛇行やループを意図的に作る複雑な迷路生成
+function generateComplexMazeWithLongPath() {
+    maze = [];
+    
+    // 迷路の初期化
     for (let y = 0; y < rows; y++) {
         const row = [];
         for (let x = 0; x < cols; x++) {
@@ -88,34 +88,87 @@ function generateMaze() {
     }
 
     const startCell = maze[0][0];
+    const goalCell = maze[rows - 1][cols - 1];
     startCell.visited = true;
-    stack.push(startCell);
+    
+    // 壁のリストを作成
+    let walls = [];
+    const directions = [
+        { x: 0, y: -1, wall: 'top', opposite: 'bottom' },
+        { x: 1, y: 0, wall: 'right', opposite: 'left' },
+        { x: 0, y: 1, wall: 'bottom', opposite: 'top' },
+        { x: -1, y: 0, wall: 'left', opposite: 'right' }
+    ];
 
-    while (stack.length > 0) {
-        const current = stack.pop();
-        const neighbors = getUnvisitedNeighbors(current);
-
-        if (neighbors.length > 0) {
-            stack.push(current);
-
-            const { cell: next, direction } = neighbors[Math.floor(Math.random() * neighbors.length)];
-            
-            // 壁を取り除く
-            current.walls[direction.wall] = false;
-            next.walls[direction.opposite] = false;
-
-            next.visited = true;
-            stack.push(next);
+    // 最初のセルの周りの壁をリストに追加
+    for (const direction of directions) {
+        const nx = startCell.x + direction.x;
+        const ny = startCell.y + direction.y;
+        if (nx >= 0 && ny >= 0 && nx < cols && ny < rows) {
+            walls.push({ current: startCell, neighbor: maze[ny][nx], direction });
         }
     }
 
-    drawMaze(); // 生成後に迷路を描画
+    // スタックを作成してDFS用の処理を追加
+    let stack = [];
+
+    // プリムとDFSとループ生成のアルゴリズム
+    while (walls.length > 0 || stack.length > 0) {
+        if (Math.random() < 0.5 && walls.length > 0) {
+            // プリム法で壁を選択する確率（ここでは50%）
+            const randomWallIndex = Math.floor(Math.random() * walls.length);
+            const { current, neighbor, direction } = walls[randomWallIndex];
+
+            // 隣接するセルが未訪問ならば、壁を取り除く
+            if (!neighbor.visited || Math.random() < 0.2) { // 20%の確率で既訪問のセルにも通路を作る
+                current.walls[direction.wall] = false;
+                neighbor.walls[direction.opposite] = false;
+                neighbor.visited = true;
+
+                // 新しいセルの周りの壁をリストに追加
+                for (const dir of directions) {
+                    const nx = neighbor.x + dir.x;
+                    const ny = neighbor.y + dir.y;
+                    if (nx >= 0 && ny >= 0 && nx < cols && ny < rows && !maze[ny][nx].visited) {
+                        walls.push({ current: neighbor, neighbor: maze[ny][nx], direction: dir });
+                    }
+                }
+
+                // 時々DFSスタックに追加し、蛇行パターンを作成
+                if (Math.random() < 0.6) { // 60%の確率でDFSに追加
+                    stack.push(neighbor);
+                }
+            }
+
+            // 壁をリストから削除
+            walls.splice(randomWallIndex, 1);
+
+        } else if (stack.length > 0) {
+            // DFSで深く探索し、遠回りになるように優先
+            const current = stack.pop();
+            const neighbors = getFartherNeighbors(current, goalCell);
+
+            if (neighbors.length > 0) {
+                stack.push(current);
+
+                const { cell: next, direction } = neighbors[Math.floor(Math.random() * neighbors.length)];
+                
+                // 壁を取り除く
+                current.walls[direction.wall] = false;
+                next.walls[direction.opposite] = false;
+
+                next.visited = true;
+                stack.push(next);
+            }
+        }
+    }
+
+    drawMaze(); // 迷路を描画
 }
 
-// 隣接する未訪問のセルを取得する関数
-function getUnvisitedNeighbors(cell) {
+// ゴールから遠ざかる隣接セルを優先的に取得する関数
+function getFartherNeighbors(cell, goalCell) {
     const neighbors = [];
-
     const directions = [
         { x: 0, y: -1, wall: 'top', opposite: 'bottom' },
         { x: 1, y: 0, wall: 'right', opposite: 'left' },
@@ -128,12 +181,17 @@ function getUnvisitedNeighbors(cell) {
         const ny = cell.y + direction.y;
 
         if (nx >= 0 && ny >= 0 && nx < cols && ny < rows && !maze[ny][nx].visited) {
-            neighbors.push({ cell: maze[ny][nx], direction });
+            const distanceToGoal = Math.abs(nx - goalCell.x) + Math.abs(ny - goalCell.y);
+            neighbors.push({ cell: maze[ny][nx], direction, distance: distanceToGoal });
         }
     }
 
+    // ゴールから遠ざかるセルを優先的にソート
+    neighbors.sort((a, b) => b.distance - a.distance);
     return neighbors;
 }
+
+
 
 // 最短経路を計算する関数
 function findShortestPath() {
@@ -271,7 +329,7 @@ function generateMazeAndPlaceQuiz(maxAttempts = 50) {
     let quizPlaced = false;
 
     while (!quizPlaced && attempts < maxAttempts) {
-        generateMaze(); // 迷路を生成
+        generateComplexMazeWithLongPath(); // 迷路を生成
         const pathCells = findShortestPath(); // 最短経路を取得
 
         if (pathCells.length > 0) {
