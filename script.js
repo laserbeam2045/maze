@@ -71,48 +71,70 @@ function placeQuizQuestionOnPath(pathCells) {
         const questionChars = selectedQuestion.question.split(""); // 文字ごとに分割
         const totalChars = questionChars.length;
 
-        // 文字を配置する間隔を計算し、ゴール地点に最後の文字が配置されるようにする
-        const interval = Math.floor((pathLength - 2) / (totalChars - 1)); // 最初と最後を除く
+        // 2分法を用いて中間の文字を均等に配置
+        function calculatePositions(start, end, numChars) {
+            if (numChars <= 0) return [];
+            if (numChars === 1) return [Math.floor((start + end) / 2)];
 
-        // 最初の文字をスタート地点に配置
+            const middle = Math.floor((start + end) / 2);
+            const leftSide = calculatePositions(start, middle - 1, Math.floor(numChars / 2));
+            const rightSide = calculatePositions(middle + 1, end, numChars - Math.floor(numChars / 2) - 1);
+
+            return [...leftSide, middle, ...rightSide];
+        }
+
+        // 最初と最後の文字をスタートとゴールに配置
+        const positions = calculatePositions(1, pathLength - 2, totalChars - 2); // スタートとゴールを除いた範囲で計算
+
+        // スタート地点に最初の文字を配置
         const startCell = pathCells[0];
         const startCellDiv = document.querySelector(`#cell-${startCell.x}-${startCell.y}`);
         startCellDiv.textContent = questionChars[0];
         startCellDiv.style.fontSize = `${Math.max(12, Math.min(20, 14))}px`;
 
-        // 最後の文字をゴール地点に配置
+        // ゴール地点に最後の文字を配置
         const goalCell = pathCells[pathCells.length - 1];
         const goalCellDiv = document.querySelector(`#cell-${goalCell.x}-${goalCell.y}`);
         goalCellDiv.textContent = questionChars[totalChars - 1];
         goalCellDiv.style.fontSize = `${Math.max(12, Math.min(20, 14))}px`;
 
-        // 残りの文字を経路上に等間隔で配置
-        for (let i = 1; i < totalChars - 1; i++) {
-            const position = i * interval + 1; // スタートとゴールを除いた位置
-            const cell = pathCells[position];
+        // 残りの文字を中間位置に配置
+        for (let i = 0; i < positions.length; i++) {
+            const position = positions[i];
+            const cell = pathCells[position + 1]; // スタート位置の次から配置
             const cellDiv = document.querySelector(`#cell-${cell.x}-${cell.y}`);
-            cellDiv.textContent = questionChars[i];
+            cellDiv.textContent = questionChars[i + 1];
             cellDiv.style.fontSize = `${Math.max(12, Math.min(20, 14))}px`;
         }
 
         // クイズの答えを表示するボタンを迷路の次に追加
-        const answerButton = document.getElementById('answer-button');
-        const answerDisplay = document.getElementById('answer-display');
-
-        answerButton.style.display = 'inline-block';
-        answerButton.onclick = () => {
-            answerDisplay.textContent = 'A. ' + selectedQuestion.answer;  // 答えを設定
-            answerDisplay.style.visibility = 'visible';  // 答えを表示
-
-            // 最短経路をハイライト
-            pathCells.forEach(cell => {
-                const cellDiv = document.querySelector(`#cell-${cell.x}-${cell.y}`);
-                cellDiv.classList.add('path');
-            });
-        };
+        handleAnswerButton(selectedQuestion, pathCells);
     } else {
         console.log("適したクイズ問題が見つかりませんでした。");
     }
+}
+
+
+
+
+function handleAnswerButton(selectedQuestion, pathCells) {
+    const answerButton = document.getElementById('answer-button');
+    const answerDisplay = document.getElementById('answer-display');
+
+    answerButton.style.display = 'inline-block';
+    answerButton.onclick = () => {
+        answerDisplay.textContent = 'A. ' + selectedQuestion.answer;
+        answerDisplay.style.visibility = 'visible';
+
+        // 最短経路をハイライト
+        pathCells.forEach(cell => {
+            const cellDiv = document.querySelector(`#cell-${cell.x}-${cell.y}`);
+            cellDiv.classList.add('path');
+        });
+
+        // ボタンを無効化するか、リスナーを削除する
+        answerButton.disabled = true;
+    };
 }
 
 

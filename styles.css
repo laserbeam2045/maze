@@ -1,15 +1,11 @@
 html, body {
   margin: 0;
   padding: 0;
-}
-
-body {
+  height: 100%;
   display: flex;
-  flex-direction: column; /* 要素を縦に並べる */
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  width: 100vw;
   background-color: #f0f0f0;
 }
 
@@ -88,10 +84,14 @@ body {
 }
 
 #answer-display {
-  margin-bottom: 16px;
+  margin-top: 16px;
   font-size: 30px;
   color: #333;
   font-weight: bold;
-  visibility: hidden; /* 見えない状態にするが、スペースを確保する */
+  visibility: hidden;
   height: 30px; /* 一行の高さを確保 */
+}
+
+.path-highlight {
+  background-color: yellow; /* 最短経路のハイライト色 */
 }
