@@ -92,6 +92,6 @@ html, body {
   height: 30px; /* 一行の高さを確保 */
 }
 
-.path-highlight {
-  background-color: yellow; /* 最短経路のハイライト色 */
+.path {
+  background-color: #fc9325; /* 最短経路のハイライト色 */
 }
